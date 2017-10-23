@@ -1,3 +1,7 @@
+## v5.1.0
+
+- adding timeout as a contructor option
+
 ## v5.0.0
 
 - `converse` and `run_actions` are deprecated

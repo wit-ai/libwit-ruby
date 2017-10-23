@@ -10,6 +10,7 @@ class Wit
   WIT_API_VERSION = ENV['WIT_API_VERSION']  || '20160516'
   DEFAULT_MAX_STEPS = 5
   LEARN_MORE = 'Learn more at https://wit.ai/docs/quickstart'
+  DEFAULT_TIMEOUT = 60
 
   def initialize(opts = {})
     @access_token = opts[:access_token]
@@ -22,7 +23,7 @@ class Wit
       logger.warn('Stories and POST /converse have been deprecated. This will break in February 2018!')
       @actions = validate_actions(logger, opts[:actions])
     end
-
+    @timeout = opts[:timeout] || DEFAULT_TIMEOUT
     @_sessions = {}
   end
 
@@ -246,7 +247,7 @@ class Wit
     request.add_field 'Content-Type', 'application/json'
     request.body = payload.to_json
 
-    Net::HTTP.start(uri.host, uri.port, {:use_ssl => uri.scheme == 'https'}) do |http|
+    Net::HTTP.start(uri.host, uri.port, {:use_ssl => uri.scheme == 'https', :read_timeout => @timeout}) do |http|
       rsp = http.request(request)
       if rsp.code.to_i != 200
         raise Error.new("HTTP error code=#{rsp.code}")

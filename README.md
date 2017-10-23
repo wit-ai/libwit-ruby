@@ -38,6 +38,7 @@ See the `examples` folder for more examples.
 
 The Wit constructor takes a `Hash` with the following symbol keys:
 * `:access_token` - the access token of your Wit instance
+* `:timeout` - the timeout duration in seconds. the class will raise a Net::ReadTimeout when the duration has expired.
 
 A minimal example looks like this:
 ```ruby
